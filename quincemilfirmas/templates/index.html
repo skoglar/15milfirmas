@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<!--
+	Stellar by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>15 Mil Firmas</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="static/css/main.css" />
+		<link rel="stylesheet" href="static/css/fontawesome-all.min.css" />
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.css"/>
+		<script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.11.4/datatables.min.js"></script>
+		<noscript><link rel="stylesheet" href="static/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+
+				<!-- Header -->
+					<header id="header" class="alt">
+						<span class="logo"><img src="images/logo.svg" alt="" /></span>
+						<h1>15 Mil Firmas</h1>
+						<p>Una lista de las iniciativas que lo lograron. <br>
+						   Última actualización: {{ last_update }}
+						</p>
+
+					</header>
+
+				<!-- Nav -->
+					<nav id="nav">
+						<ul>
+							<li><a href="#admitidas" class="active">Admitidas</a></li>
+							<li><a href="#siguientes">Las que siguen</a></li>
+						</ul>
+					</nav>
+
+				<!-- Main -->
+					<div id="main">
+						<!-- Admitidas -->
+							<section id="admitidas" class="main">
+								<div class="spotlight">
+									<div class="content">
+										<header class="major">
+											<h2>Iniciativas admitidas</h2>
+										</header>
+										<table id="tabla_admitidas" class="display table table-striped table-bordered table-sm">
+											<thead>
+												<tr>
+													<th>#</th>
+									                <th>Apoyo</th>
+									                <th>Titulo</th>
+									                <th>Nro</th>
+									            </tr>
+											</thead>
+											<colgroup>
+											    <col width="10px">
+											    <col width=10%>
+											    <col>
+											    <col>
+											</colgroup>
+											<tbody>
+											{% for admitida in admitidas %}
+												<tr>
+													<td>{{ loop.index }}</td>
+													<td class="colapoyo">{{ '{0:,}'.format(admitida['apoyo'] | int).replace(',','.') }} <span id="diferencia">{{ "(%s %s)"|format(admitida['diff'], '▲') if admitida['diff'] > 0 }}<span></td>
+													<td class="coltitulo"><a href="{{ admitida['link'] }}">{{ admitida['titulo'] }}</a></td>
+													<td class="colnro">{{ admitida['nro'] }}</td>
+												</tr>
+											{% endfor %}
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</section>
+
+						<!-- Siguientes -->
+							<section id="siguientes" class="main special">
+								<div class="content">
+									<header class="major">
+										<h2>Iniciativas Siguientes</h2>
+									</header>
+									<table id="tabla_siguientes" class="display">
+										<thead>
+											<tr>
+												<th>#</th>
+								                <th>Apoyo</th>
+								                <th>Titulo</th>
+								                <th>Nro</th>
+								            </tr>
+										</thead>
+										<colgroup>
+										    <col width=".5%">
+										    <col width=10%>
+										    <col>
+										    <col>
+										</colgroup>
+										<tbody>
+										{% for siguiente in siguientes %}
+											<tr>
+												<td>{{ loop.index }}</td>
+												<td class="colapoyo">{{ '{0:,}'.format(siguiente['apoyo'] | int).replace(',','.') }} <span id="diferencia">{{ "(%s %s)"|format(siguiente['diff'], '▲') if siguiente['diff'] > 0 }}<span></td>
+												<td class="coltitulo"><a href="{{ siguiente['link'] }}">{{ siguiente['titulo'] }}</a></td>
+												<td class="colnro">{{ siguiente['nro'] }}</td>
+											</tr>
+										{% endfor %}
+										</tbody>
+									</table>
+								</div>
+							</section>
+						</div>
+				<!-- Footer -->
+					<footer id="footer">
+						<section>
+							<h2>¿Por Qué?</h2>
+							<p>Actualmente la página de las iniciativas no permite ordenar el listado por cantidad de firmas recibidas, por lo que es difícil saber cuáles iniciativas lograron el apoyo sin revisarlas una por una.</p>
+						</section>
+						<section>
+							<h2>Made with some python magic</h2>
+							<dl class="alt">
+								<dt>Skoglar</dt>
+								<dd><a href="http://github.com/skoglar">on Github</a></dd>
+							</dl>
+						</section>
+						<p class="copyright">&copy; Untitled. Design: <a href="https://html5up.net">HTML5 UP</a>.</p>
+					</footer>
+
+			</div>
+
+		<!-- Scripts -->
+
+			<script src="static/js/jquery.scrollex.min.js"></script>
+			<script src="static/js/jquery.scrolly.min.js"></script>
+			<script src="static/js/browser.min.js"></script>
+			<script src="static/js/breakpoints.min.js"></script>
+			<script src="static/js/util.js"></script>
+			<script src="static/js/main.js"></script>
+			<script>
+				$(document).ready(function () {
+				  $('#tabla_admitidas').DataTable({
+				  	searching: false, info: false, lengthChange: false,
+				  	"columnDefs": [
+    						{ "orderable": false, "targets": 0 }
+  					],
+  					"aoColumns": [
+    						{ "bSortable": false },
+	    					{ "bSortable": true },
+    						{ "bSortable": true },
+    						{ "bSortable": true }
+    					],
+					buttons: [
+					          'copy', 'excel', 'pdf'
+					]
+				  });
+				  $('.dataTables_length').addClass('bs-select');
+				});
+			</script>
+	</body>
+</html>
