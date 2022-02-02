@@ -59,7 +59,8 @@ orden.reverse()
 
 
 config = configparser.ConfigParser()
-config.read(os.path.abspath(os.path.join("../.db.ini")))
+configpath = os.path.abspath(os.path.join(os.path.dirname(__file__), "../", ".db.ini"))
+config.read(configpath)
 DB_URI = config['PROD']['DB_URI']
 
 client = MongoClient(DB_URI)
